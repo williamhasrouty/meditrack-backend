@@ -1,0 +1,23 @@
+{
+  "name": "meditrack-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": ".eslintrc.js",
+  "scripts": {
+    "lint": "npx eslint .",
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/williamhasrouty/meditrack-backend.git"
+  },
+  "keywords": [],
+  "author": "William Hasrouty",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/williamhasrouty/meditrack-backend/issues"
+  },
+  "homepage": "https://github.com/williamhasrouty/meditrack-backend#readme"
+}
