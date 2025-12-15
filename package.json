@@ -1,0 +1,48 @@
+{
+  "name": "meditrack-backend",
+  "version": "1.0.0",
+  "description": "Backend API for MediTrack - A medication tracking and management application",
+  "main": "app.js",
+  "scripts": {
+    "lint": "npx eslint .",
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/williamhasrouty/meditrack-backend.git"
+  },
+  "keywords": [
+    "medication",
+    "tracking",
+    "healthcare",
+    "api"
+  ],
+  "author": "William Hasrouty",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/williamhasrouty/meditrack-backend/issues"
+  },
+  "homepage": "https://github.com/williamhasrouty/meditrack-backend#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "celebrate": "^15.0.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.2",
+    "express-rate-limit": "^7.5.0",
+    "helmet": "^8.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.9.3",
+    "validator": "^13.12.0",
+    "express-winston": "^4.2.0",
+    "winston": "^3.17.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.1",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.31.0",
+    "nodemon": "^3.1.9"
+  }
+}
