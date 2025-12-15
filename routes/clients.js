@@ -1,4 +1,4 @@
-const router = require("express").Router();
+const router = require('express').Router();
 const {
   getClients,
   getClientById,
@@ -8,7 +8,7 @@ const {
   addMedication,
   updateMedication,
   deleteMedication,
-} = require("../controllers/clients");
+} = require('../controllers/clients');
 const {
   validateClientId,
   validateCreateClient,
@@ -16,43 +16,43 @@ const {
   validateAddMedication,
   validateUpdateMedication,
   validateDeleteMedication,
-} = require("../middlewares/validation");
+} = require('../middlewares/validation');
 
 // GET /clients - get all clients for logged-in user
-router.get("/", getClients);
+router.get('/', getClients);
 
 // POST /clients - create a new client
-router.post("/", validateCreateClient, createClient);
+router.post('/', validateCreateClient, createClient);
 
 // GET /clients/:clientId - get a single client
-router.get("/:clientId", validateClientId, getClientById);
+router.get('/:clientId', validateClientId, getClientById);
 
 // PATCH /clients/:clientId - update a client
 router.patch(
-  "/:clientId",
+  '/:clientId',
   validateClientId,
   validateUpdateClient,
-  updateClient
+  updateClient,
 );
 
 // DELETE /clients/:clientId - delete a client
-router.delete("/:clientId", validateClientId, deleteClient);
+router.delete('/:clientId', validateClientId, deleteClient);
 
 // POST /clients/:clientId/medications - add a medication to a client
-router.post("/:clientId/medications", validateAddMedication, addMedication);
+router.post('/:clientId/medications', validateAddMedication, addMedication);
 
 // PATCH /clients/:clientId/medications/:medicationId - update a medication
 router.patch(
-  "/:clientId/medications/:medicationId",
+  '/:clientId/medications/:medicationId',
   validateUpdateMedication,
-  updateMedication
+  updateMedication,
 );
 
 // DELETE /clients/:clientId/medications/:medicationId - delete a medication
 router.delete(
-  "/:clientId/medications/:medicationId",
+  '/:clientId/medications/:medicationId',
   validateDeleteMedication,
-  deleteMedication
+  deleteMedication,
 );
 
 module.exports = router;

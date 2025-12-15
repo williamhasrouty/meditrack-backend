@@ -1,26 +1,26 @@
-const router = require("express").Router();
+const router = require('express').Router();
 const {
   getAdministrations,
   saveAdministrations,
   deleteAdministrations,
-} = require("../controllers/administrations");
+} = require('../controllers/administrations');
 const {
   validateGetAdministrations,
   validateSaveAdministrations,
   validateDeleteAdministrations,
-} = require("../middlewares/validation");
+} = require('../middlewares/validation');
 
 // GET /administrations/:clientId - get administration records
-router.get("/:clientId", validateGetAdministrations, getAdministrations);
+router.get('/:clientId', validateGetAdministrations, getAdministrations);
 
 // POST /administrations/:clientId - save administration records
-router.post("/:clientId", validateSaveAdministrations, saveAdministrations);
+router.post('/:clientId', validateSaveAdministrations, saveAdministrations);
 
 // DELETE /administrations/:clientId - delete administration records
 router.delete(
-  "/:clientId",
+  '/:clientId',
   validateDeleteAdministrations,
-  deleteAdministrations
+  deleteAdministrations,
 );
 
 module.exports = router;

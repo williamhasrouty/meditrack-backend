@@ -1,9 +1,9 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const administrationSchema = new mongoose.Schema({
   clientId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "client",
+    ref: 'client',
     required: true,
   },
   medicationId: {
@@ -27,7 +27,7 @@ const administrationSchema = new mongoose.Schema({
   },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "user",
+    ref: 'user',
     required: true,
   },
   createdAt: {
@@ -44,9 +44,9 @@ const administrationSchema = new mongoose.Schema({
 administrationSchema.index({ clientId: 1, month: 1, year: 1 });
 
 // Update the updatedAt timestamp before saving
-administrationSchema.pre("save", function (next) {
+administrationSchema.pre('save', function (next) {
   this.updatedAt = Date.now();
   next();
 });
 
-module.exports = mongoose.model("administration", administrationSchema);
+module.exports = mongoose.model('administration', administrationSchema);

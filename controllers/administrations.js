@@ -1,6 +1,6 @@
-const Administration = require("../models/administration");
-const Client = require("../models/client");
-const { BadRequestError, NotFoundError } = require("../errors/errors");
+const Administration = require('../models/administration');
+const Client = require('../models/client');
+const { BadRequestError, NotFoundError } = require('../errors/errors');
 
 // Get administration records for a client/month/year
 const getAdministrations = (req, res, next) => {
@@ -11,7 +11,7 @@ const getAdministrations = (req, res, next) => {
   Client.findOne({ _id: clientId, owner: req.user._id })
     .then((client) => {
       if (!client) {
-        throw new NotFoundError("Client not found");
+        throw new NotFoundError('Client not found');
       }
 
       return Administration.findOne({
@@ -25,11 +25,11 @@ const getAdministrations = (req, res, next) => {
       if (!administration) {
         return res.send({ records: {} });
       }
-      res.send({ records: administration.records });
+      return res.send({ records: administration.records });
     })
     .catch((err) => {
-      if (err.name === "CastError") {
-        next(new BadRequestError("Invalid client ID"));
+      if (err.name === 'CastError') {
+        next(new BadRequestError('Invalid client ID'));
       } else {
         next(err);
       }
@@ -39,13 +39,15 @@ const getAdministrations = (req, res, next) => {
 // Save administration records
 const saveAdministrations = (req, res, next) => {
   const { clientId } = req.params;
-  const { month, year, medicationId, records } = req.body;
+  const {
+    month, year, medicationId, records,
+  } = req.body;
 
   // Verify the client belongs to the user
   Client.findOne({ _id: clientId, owner: req.user._id })
     .then((client) => {
       if (!client) {
-        throw new NotFoundError("Client not found");
+        throw new NotFoundError('Client not found');
       }
 
       return Administration.findOneAndUpdate(
@@ -64,15 +66,15 @@ const saveAdministrations = (req, res, next) => {
           new: true,
           upsert: true,
           runValidators: true,
-        }
+        },
       );
     })
     .then((administration) => res.send(administration))
     .catch((err) => {
-      if (err.name === "ValidationError") {
-        next(new BadRequestError("Invalid data provided"));
-      } else if (err.name === "CastError") {
-        next(new BadRequestError("Invalid ID"));
+      if (err.name === 'ValidationError') {
+        next(new BadRequestError('Invalid data provided'));
+      } else if (err.name === 'CastError') {
+        next(new BadRequestError('Invalid ID'));
       } else {
         next(err);
       }
@@ -92,13 +94,13 @@ const deleteAdministrations = (req, res, next) => {
   })
     .then((administration) => {
       if (!administration) {
-        throw new NotFoundError("Administration records not found");
+        throw new NotFoundError('Administration records not found');
       }
-      res.send({ message: "Administration records deleted successfully" });
+      res.send({ message: 'Administration records deleted successfully' });
     })
     .catch((err) => {
-      if (err.name === "CastError") {
-        next(new BadRequestError("Invalid ID"));
+      if (err.name === 'CastError') {
+        next(new BadRequestError('Invalid ID'));
       } else {
         next(err);
       }

@@ -1,16 +1,15 @@
-require("dotenv").config();
-const express = require("express");
-const mongoose = require("mongoose");
-const cors = require("cors");
-const helmet = require("helmet");
-const rateLimit = require("express-rate-limit");
-const { errors } = require("celebrate");
-const routes = require("./routes");
-const errorHandler = require("./middlewares/errorHandler");
-const { requestLogger, errorLogger } = require("./middlewares/logger");
+require('dotenv').config();
+const express = require('express');
+const mongoose = require('mongoose');
+const cors = require('cors');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
+const { errors } = require('celebrate');
+const routes = require('./routes');
+const errorHandler = require('./middlewares/errorHandler');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
 
-const { PORT = 3001, MONGODB_URI = "mongodb://127.0.0.1:27017/meditrack" } =
-  process.env;
+const { PORT = 3001, MONGODB_URI = 'mongodb://127.0.0.1:27017/meditrack' } = process.env;
 
 const app = express();
 
@@ -18,10 +17,10 @@ const app = express();
 mongoose
   .connect(MONGODB_URI)
   .then(() => {
-    console.log("Connected to MongoDB");
+    console.log('Connected to MongoDB');
   })
   .catch((err) => {
-    console.error("MongoDB connection error:", err);
+    console.error('MongoDB connection error:', err);
   });
 
 // Security middleware
@@ -32,7 +31,7 @@ app.use(cors());
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100, // limit each IP to 100 requests per windowMs
-  message: "Too many requests from this IP, please try again later.",
+  message: 'Too many requests from this IP, please try again later.',
 });
 app.use(limiter);
 

@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const medicationSchema = new mongoose.Schema({
   name: {
@@ -10,7 +10,7 @@ const medicationSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator: (v) => v.length > 0,
-      message: "At least one administration time is required",
+      message: 'At least one administration time is required',
     },
   },
   createdAt: {
@@ -29,7 +29,7 @@ const clientSchema = new mongoose.Schema({
   medications: [medicationSchema],
   owner: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "user",
+    ref: 'user',
     required: true,
   },
   createdAt: {
@@ -43,9 +43,9 @@ const clientSchema = new mongoose.Schema({
 });
 
 // Update the updatedAt timestamp before saving
-clientSchema.pre("save", function (next) {
+clientSchema.pre('save', function (next) {
   this.updatedAt = Date.now();
   next();
 });
 
-module.exports = mongoose.model("client", clientSchema);
+module.exports = mongoose.model('client', clientSchema);
