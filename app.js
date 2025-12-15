@@ -9,7 +9,11 @@ const routes = require('./routes');
 const errorHandler = require('./middlewares/errorHandler');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
-const { PORT = 3001, MONGODB_URI = 'mongodb://127.0.0.1:27017/meditrack' } = process.env;
+const {
+  PORT = 3001,
+  MONGODB_URI = 'mongodb://127.0.0.1:27017/meditrack',
+  NODE_ENV = 'development',
+} = process.env;
 
 const app = express();
 
@@ -25,7 +29,16 @@ mongoose
 
 // Security middleware
 app.use(helmet());
-app.use(cors());
+
+// CORS configuration
+const corsOptions = {
+  origin:
+    NODE_ENV === 'production'
+      ? ['https://meditrack.jumpingcrab.com', 'https://williamhasrouty.github.io']
+      : '*',
+  credentials: true,
+};
+app.use(cors(corsOptions));
 
 // Rate limiting
 const limiter = rateLimit({
