@@ -14,6 +14,7 @@ This document provides step-by-step instructions for deploying the MediTrack bac
 ## Deployment Status
 
 ✅ **Backend Deployed Successfully**
+
 - API URL: https://api.meditrack.jumpingcrab.com
 - Server IP: 34.121.50.214
 - Port: 3002
@@ -22,6 +23,7 @@ This document provides step-by-step instructions for deploying the MediTrack bac
 - Status: Running
 
 **Note:** If DNS hasn't fully propagated, you can verify the backend is working by SSH'ing into the VM and running:
+
 ```bash
 curl http://localhost:3002
 # Should return: MediTrack backend is running 🚀
@@ -277,10 +279,10 @@ pm2 save                                 # Save current process list
 
 ## Domain Configuration
 
-| Subdomain                     | IP Address   | Purpose              |
-| ----------------------------- | ------------ | -------------------- |
-| api.meditrack.jumpingcrab.com | 97.167.151.3 | Backend API          |
-| meditrack.jumpingcrab.com     | 97.167.151.3 | Frontend Application |
+| Subdomain                     | IP Address    | Purpose              |
+| ----------------------------- | ------------- | -------------------- |
+| api.meditrack.jumpingcrab.com | 34.121.50.214 | Backend API          |
+| meditrack.jumpingcrab.com     | 34.121.50.214 | Frontend Application |
 
 Both domains point to the same VM. NGINX routes requests based on the subdomain:
 
