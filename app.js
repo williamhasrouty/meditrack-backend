@@ -59,8 +59,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(requestLogger);
 
 // Root route
-app.get('/', (req, res) => {
-  res.status(200).send('MediTrack backend is running 🚀');
+app.get("/", (req, res) => {
+  res.status(200).send("MediTrack backend is running 🚀");
 });
 
 // Routes

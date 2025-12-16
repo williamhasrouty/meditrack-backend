@@ -26,17 +26,20 @@ Backend API for MediTrack - A medication tracking and management application.
 ## Installation
 
 1. Clone the repository:
+
 ```bash
 git clone https://github.com/williamhasrouty/meditrack-backend.git
 cd meditrack-backend
 ```
 
 2. Install dependencies:
+
 ```bash
 npm install
 ```
 
 3. Create a `.env` file based on `.env.example`:
+
 ```bash
 PORT=3001
 MONGODB_URI=mongodb://127.0.0.1:27017/meditrack
@@ -44,6 +47,7 @@ JWT_SECRET=your-secret-key-here
 ```
 
 4. Start the server:
+
 ```bash
 # Development mode
 npm run dev
@@ -55,10 +59,12 @@ npm start
 ## API Endpoints
 
 ### Public Routes
+
 - `POST /signup` - Create a new user account
 - `POST /signin` - Login and receive JWT token
 
 ### Protected Routes (require authentication)
+
 - `GET /users/me` - Get current user information
 - `PATCH /users/me` - Update current user profile
 - `GET /clients` - Get all clients for logged-in user
@@ -80,11 +86,13 @@ The backend is deployed on Google Cloud VM using NGINX as a reverse proxy and PM
 ### Server Configuration
 
 1. **NGINX Configuration** (`/etc/nginx/sites-available/final-project`):
+
    - Server listens on port 80/443
    - Reverse proxy to Node.js app on port 3002
    - SSL/TLS certificates managed by Certbot
 
 2. **PM2 Process Manager**:
+
    ```bash
    PORT=3002 pm2 start app.js --name final-project
    pm2 save
@@ -108,11 +116,13 @@ The backend is deployed on Google Cloud VM using NGINX as a reverse proxy and PM
 ## Development
 
 ### Linting
+
 ```bash
 npm run lint
 ```
 
 ### Code Style
+
 - ESLint with Airbnb base configuration
 - Single quotes for strings
 - No trailing commas in objects
