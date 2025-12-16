@@ -1,18 +1,18 @@
-require('dotenv').config();
-const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors');
-const helmet = require('helmet');
-const rateLimit = require('express-rate-limit');
-const { errors } = require('celebrate');
-const routes = require('./routes');
-const errorHandler = require('./middlewares/errorHandler');
-const { requestLogger, errorLogger } = require('./middlewares/logger');
+require("dotenv").config();
+const express = require("express");
+const mongoose = require("mongoose");
+const cors = require("cors");
+const helmet = require("helmet");
+const rateLimit = require("express-rate-limit");
+const { errors } = require("celebrate");
+const routes = require("./routes");
+const errorHandler = require("./middlewares/errorHandler");
+const { requestLogger, errorLogger } = require("./middlewares/logger");
 
 const {
   PORT = 3001,
-  MONGODB_URI = 'mongodb://127.0.0.1:27017/meditrack',
-  NODE_ENV = 'development',
+  MONGODB_URI = "mongodb://127.0.0.1:27017/meditrack",
+  NODE_ENV = "development",
 } = process.env;
 
 const app = express();
@@ -21,10 +21,10 @@ const app = express();
 mongoose
   .connect(MONGODB_URI)
   .then(() => {
-    console.log('Connected to MongoDB');
+    console.log("Connected to MongoDB");
   })
   .catch((err) => {
-    console.error('MongoDB connection error:', err);
+    console.error("MongoDB connection error:", err);
   });
 
 // Security middleware
@@ -33,9 +33,12 @@ app.use(helmet());
 // CORS configuration
 const corsOptions = {
   origin:
-    NODE_ENV === 'production'
-      ? ['https://meditrack.jumpingcrab.com', 'https://williamhasrouty.github.io']
-      : '*',
+    NODE_ENV === "production"
+      ? [
+          "https://meditrack.jumpingcrab.com",
+          "https://williamhasrouty.github.io",
+        ]
+      : "*",
   credentials: true,
 };
 app.use(cors(corsOptions));
@@ -44,7 +47,7 @@ app.use(cors(corsOptions));
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100, // limit each IP to 100 requests per windowMs
-  message: 'Too many requests from this IP, please try again later.',
+  message: "Too many requests from this IP, please try again later.",
 });
 app.use(limiter);
 
@@ -54,6 +57,11 @@ app.use(express.urlencoded({ extended: true }));
 
 // Logging
 app.use(requestLogger);
+
+// Root route
+app.get('/', (req, res) => {
+  res.status(200).send('MediTrack backend is running 🚀');
+});
 
 // Routes
 app.use(routes);
