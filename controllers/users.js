@@ -22,7 +22,7 @@ const createUser = (req, res, next) => {
       email,
       password: hash,
       name,
-      initials: initials.toUpperCase(),
+      initials: initials ? initials.toUpperCase() : undefined,
     }))
     .then((user) => {
       res.status(201).send({
