@@ -6,10 +6,28 @@ This document provides step-by-step instructions for deploying the MediTrack bac
 
 - Google Cloud VM with Ubuntu
 - Domain names configured:
-  - `api.meditrack.jumpingcrab.com` → VM IP (97.167.151.3)
-  - `meditrack.jumpingcrab.com` → VM IP (97.167.151.3)
+  - `api.meditrack.jumpingcrab.com` → VM IP (34.121.50.214)
+  - `meditrack.jumpingcrab.com` → VM IP (34.121.50.214)
 - SSH access to the VM
 - MongoDB installed on the VM
+
+## Deployment Status
+
+✅ **Backend Deployed Successfully**
+
+- API URL: https://api.meditrack.jumpingcrab.com
+- Server IP: 34.121.50.214
+- Port: 3002
+- SSL: Enabled via Let's Encrypt
+- PM2 Process: `final-project`
+- Status: Running
+
+**Note:** If DNS hasn't fully propagated, you can verify the backend is working by SSH'ing into the VM and running:
+
+```bash
+curl http://localhost:3002
+# Should return: MediTrack backend is running 🚀
+```
 
 ## Deployment Steps
 
@@ -33,6 +51,7 @@ Update the configuration file with the following changes:
 - Update `root` directive to `/home/USERNAME/final-project-frontend`
 
 Example configuration:
+
 ```nginx
 server {
     server_name api.meditrack.jumpingcrab.com;
@@ -52,11 +71,13 @@ server {
 ```
 
 Create a symlink to enable the site:
+
 ```bash
 sudo ln -s /etc/nginx/sites-available/final-project /etc/nginx/sites-enabled/final-project
 ```
 
 Test and reload NGINX:
+
 ```bash
 sudo nginx -t
 sudo systemctl reload nginx
@@ -91,6 +112,7 @@ nano .env
 ```
 
 Add the following configuration:
+
 ```
 PORT=3002
 MONGODB_URI=mongodb://127.0.0.1:27017/meditrack
@@ -114,6 +136,7 @@ pm2 startup
 ```
 
 Verify the application is running:
+
 ```bash
 pm2 status
 pm2 logs final-project
@@ -132,6 +155,7 @@ sudo certbot --nginx
 ```
 
 Certbot will automatically:
+
 - Obtain SSL certificates
 - Configure NGINX to use HTTPS
 - Set up automatic certificate renewal
@@ -168,6 +192,7 @@ curl -X POST https://api.meditrack.jumpingcrab.com/signup \
 ## Maintenance
 
 ### View Logs
+
 ```bash
 # PM2 logs
 pm2 logs final-project
@@ -180,11 +205,13 @@ sudo tail -f /var/log/nginx/error.log
 ```
 
 ### Restart Application
+
 ```bash
 pm2 restart final-project
 ```
 
 ### Update Application
+
 ```bash
 cd ~/meditrack-backend
 git pull origin stage-2-backend
@@ -193,7 +220,9 @@ pm2 restart final-project
 ```
 
 ### SSL Certificate Renewal
+
 Certbot automatically renews certificates. To test renewal:
+
 ```bash
 sudo certbot renew --dry-run
 ```
@@ -201,22 +230,26 @@ sudo certbot renew --dry-run
 ## Troubleshooting
 
 ### Application Won't Start
+
 1. Check PM2 logs: `pm2 logs final-project`
 2. Verify environment variables in `.env`
 3. Ensure MongoDB is running: `sudo systemctl status mongod`
 4. Check port availability: `sudo lsof -i :3002`
 
 ### NGINX Errors
+
 1. Test configuration: `sudo nginx -t`
 2. Check error logs: `sudo tail -f /var/log/nginx/error.log`
 3. Verify file permissions on frontend directory
 
 ### SSL Certificate Issues
+
 1. Check certificate status: `sudo certbot certificates`
 2. Renew manually: `sudo certbot renew`
 3. Verify domain DNS records
 
 ### MongoDB Connection Issues
+
 1. Check MongoDB status: `sudo systemctl status mongod`
 2. Verify connection string in `.env`
 3. Check MongoDB logs: `sudo tail -f /var/log/mongodb/mongod.log`
@@ -246,11 +279,12 @@ pm2 save                                 # Save current process list
 
 ## Domain Configuration
 
-| Subdomain | IP Address | Purpose |
-|-----------|------------|---------|
-| api.meditrack.jumpingcrab.com | 97.167.151.3 | Backend API |
-| meditrack.jumpingcrab.com | 97.167.151.3 | Frontend Application |
+| Subdomain                     | IP Address    | Purpose              |
+| ----------------------------- | ------------- | -------------------- |
+| api.meditrack.jumpingcrab.com | 34.121.50.214 | Backend API          |
+| meditrack.jumpingcrab.com     | 34.121.50.214 | Frontend Application |
 
 Both domains point to the same VM. NGINX routes requests based on the subdomain:
+
 - `api.meditrack.jumpingcrab.com` → Backend (port 3002)
 - `meditrack.jumpingcrab.com` → Frontend static files
