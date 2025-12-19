@@ -60,13 +60,9 @@ const login = (req, res, next) => {
           throw new UnauthorizedError('Incorrect email or password');
         }
 
-        const token = jwt.sign(
-          { _id: user._id, role: user.role },
-          JWT_SECRET,
-          {
-            expiresIn: '7d',
-          },
-        );
+        const token = jwt.sign({ _id: user._id, role: user.role }, JWT_SECRET, {
+          expiresIn: '7d',
+        });
 
         return res.send({
           token,
@@ -133,9 +129,38 @@ const updateUser = (req, res, next) => {
     });
 };
 
+// Update user role (admin only)
+const updateUserRole = (req, res, next) => {
+  const { userId } = req.params;
+  const { role } = req.body;
+
+  User.findByIdAndUpdate(userId, { role }, { new: true, runValidators: true })
+    .then((user) => {
+      if (!user) {
+        throw new NotFoundError('User not found');
+      }
+      res.send({
+        _id: user._id,
+        email: user.email,
+        name: user.name,
+        role: user.role,
+      });
+    })
+    .catch((err) => {
+      if (err.name === 'ValidationError') {
+        next(new BadRequestError('Invalid role provided'));
+      } else if (err.name === 'CastError') {
+        next(new BadRequestError('Invalid user ID'));
+      } else {
+        next(err);
+      }
+    });
+};
+
 module.exports = {
   createUser,
   login,
   getCurrentUser,
   updateUser,
+  updateUserRole,
 };
