@@ -6,7 +6,7 @@ const validateSignup = celebrate({
     email: Joi.string().required().email(),
     password: Joi.string().required().min(8),
     name: Joi.string().required().min(2).max(30),
-    initials: Joi.string().required().min(2).max(3),
+    initials: Joi.string().min(2).max(3),
   }),
 });
 
@@ -113,10 +113,21 @@ const validateDeleteAdministrations = celebrate({
   }),
 });
 
+// Validation for updating user role
+const validateUpdateUserRole = celebrate({
+  params: Joi.object().keys({
+    userId: Joi.string().hex().length(24).required(),
+  }),
+  body: Joi.object().keys({
+    role: Joi.string().valid('staff', 'admin').required(),
+  }),
+});
+
 module.exports = {
   validateSignup,
   validateSignin,
   validateUpdateUser,
+  validateUpdateUserRole,
   validateClientId,
   validateCreateClient,
   validateUpdateClient,

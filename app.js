@@ -8,12 +8,8 @@ const { errors } = require('celebrate');
 const routes = require('./routes');
 const errorHandler = require('./middlewares/errorHandler');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
-
-const {
-  PORT = 3001,
-  MONGODB_URI = 'mongodb://127.0.0.1:27017/meditrack',
-  NODE_ENV = 'development',
-} = process.env;
+const { PORT, MONGODB_URI, NODE_ENV } = require('./config/config');
+const { NotFoundError } = require('./errors/errors');
 
 const app = express();
 
@@ -34,7 +30,10 @@ app.use(helmet());
 const corsOptions = {
   origin:
     NODE_ENV === 'production'
-      ? ['https://meditrack.jumpingcrab.com', 'https://williamhasrouty.github.io']
+      ? [
+        'https://meditrack.jumpingcrab.com',
+        'https://williamhasrouty.github.io',
+      ]
       : '*',
   credentials: true,
 };
@@ -55,8 +54,18 @@ app.use(express.urlencoded({ extended: true }));
 // Logging
 app.use(requestLogger);
 
+// Root route
+app.get('/', (req, res) => {
+  res.status(200).send('MediTrack backend is running 🚀');
+});
+
 // Routes
 app.use(routes);
+
+// Handle undefined routes
+app.use((req, res, next) => {
+  next(new NotFoundError('Requested resource not found'));
+});
 
 // Error logging
 app.use(errorLogger);

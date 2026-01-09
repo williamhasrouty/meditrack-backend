@@ -24,7 +24,6 @@ const userSchema = new mongoose.Schema({
   },
   initials: {
     type: String,
-    required: true,
     minlength: 2,
     maxlength: 3,
     uppercase: true,
@@ -35,6 +34,11 @@ const userSchema = new mongoose.Schema({
       validator: (v) => validator.isURL(v),
       message: 'Invalid URL format',
     },
+  },
+  role: {
+    type: String,
+    enum: ['staff', 'admin'],
+    default: 'staff',
   },
 });
 
