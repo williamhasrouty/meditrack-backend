@@ -1,27 +1,27 @@
-const router = require('express').Router();
+const router = require("express").Router();
 const {
   getCurrentUser,
   updateUser,
   updateUserRole,
-} = require('../controllers/users');
+} = require("../controllers/users");
 const {
   validateUpdateUser,
   validateUpdateUserRole,
-} = require('../middlewares/validation');
-const { requireAdmin } = require('../middlewares/authorization');
+} = require("../middlewares/validation");
+const { requireAdmin } = require("../middlewares/authorization");
 
 // GET /users/me - get current user info
-router.get('/me', getCurrentUser);
+router.get("/me", getCurrentUser);
 
 // PATCH /users/me - update current user profile
-router.patch('/me', validateUpdateUser, updateUser);
+router.patch("/me", validateUpdateUser, updateUser);
 
 // PATCH /users/:userId/role - update user role (admin only)
 router.patch(
-  '/:userId/role',
+  "/:userId/role",
   requireAdmin,
   validateUpdateUserRole,
-  updateUserRole,
+  updateUserRole
 );
 
 module.exports = router;

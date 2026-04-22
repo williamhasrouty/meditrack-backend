@@ -31,7 +31,7 @@ const userSchema = new mongoose.Schema({
   avatar: {
     type: String,
     validate: {
-      validator: (v) => validator.isURL(v),
+      validator: (v) => !v || validator.isURL(v),
       message: 'Invalid URL format',
     },
   },

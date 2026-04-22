@@ -1,4 +1,4 @@
-const router = require('express').Router();
+const router = require("express").Router();
 const {
   getClients,
   getClientById,
@@ -8,7 +8,7 @@ const {
   addMedication,
   updateMedication,
   deleteMedication,
-} = require('../controllers/clients');
+} = require("../controllers/clients");
 const {
   validateClientId,
   validateCreateClient,
@@ -16,21 +16,21 @@ const {
   validateAddMedication,
   validateUpdateMedication,
   validateDeleteMedication,
-} = require('../middlewares/validation');
-const { requireAdmin } = require('../middlewares/authorization');
+} = require("../middlewares/validation");
+const { requireAdmin } = require("../middlewares/authorization");
 
 // GET /clients - get all clients for logged-in user
-router.get('/', getClients);
+router.get("/", getClients);
 
 // POST /clients - create a new client (admin only)
-router.post('/', requireAdmin, validateCreateClient, createClient);
+router.post("/", requireAdmin, validateCreateClient, createClient);
 
 // GET /clients/:clientId - get a single client
-router.get('/:clientId', validateClientId, getClientById);
+router.get("/:clientId", validateClientId, getClientById);
 
 // PATCH /clients/:clientId - update a client (admin only)
 router.patch(
-  '/:clientId',
+  "/:clientId",
   requireAdmin,
   validateClientId,
   validateUpdateClient,
@@ -38,11 +38,11 @@ router.patch(
 );
 
 // DELETE /clients/:clientId - delete a client (admin only)
-router.delete('/:clientId', requireAdmin, validateClientId, deleteClient);
+router.delete("/:clientId", requireAdmin, validateClientId, deleteClient);
 
 // POST /clients/:clientId/medications - add a medication to a client (admin only)
 router.post(
-  '/:clientId/medications',
+  "/:clientId/medications",
   requireAdmin,
   validateAddMedication,
   addMedication,
@@ -50,7 +50,7 @@ router.post(
 
 // PATCH /clients/:clientId/medications/:medicationId - update a medication (admin only)
 router.patch(
-  '/:clientId/medications/:medicationId',
+  "/:clientId/medications/:medicationId",
   requireAdmin,
   validateUpdateMedication,
   updateMedication,
@@ -58,7 +58,7 @@ router.patch(
 
 // DELETE /clients/:clientId/medications/:medicationId - delete a medication (admin only)
 router.delete(
-  '/:clientId/medications/:medicationId',
+  "/:clientId/medications/:medicationId",
   requireAdmin,
   validateDeleteMedication,
   deleteMedication,

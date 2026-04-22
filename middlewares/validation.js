@@ -1,4 +1,4 @@
-const { Joi, celebrate } = require('celebrate');
+const { Joi, celebrate } = require("celebrate");
 
 // Validation for user signup
 const validateSignup = celebrate({
@@ -22,7 +22,8 @@ const validateSignin = celebrate({
 const validateUpdateUser = celebrate({
   body: Joi.object().keys({
     name: Joi.string().min(2).max(30),
-    avatar: Joi.string().uri(),
+    avatar: Joi.string().uri().allow(''),
+    initials: Joi.string().min(2).max(3),
   }),
 });
 
@@ -119,7 +120,7 @@ const validateUpdateUserRole = celebrate({
     userId: Joi.string().hex().length(24).required(),
   }),
   body: Joi.object().keys({
-    role: Joi.string().valid('staff', 'admin').required(),
+    role: Joi.string().valid("staff", "admin").required(),
   }),
 });
 
