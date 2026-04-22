@@ -119,11 +119,10 @@ const updateUser = (req, res, next) => {
   if (avatar !== undefined) updateData.avatar = avatar || null; // Allow clearing avatar
   if (initials !== undefined) updateData.initials = initials.toUpperCase();
 
-  User.findByIdAndUpdate(
-    req.user._id,
-    updateData,
-    { new: true, runValidators: true },
-  )
+  User.findByIdAndUpdate(req.user._id, updateData, {
+    new: true,
+    runValidators: true,
+  })
     .then((user) => {
       if (!user) {
         throw new NotFoundError("User not found");
