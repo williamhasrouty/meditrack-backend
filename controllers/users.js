@@ -173,10 +173,19 @@ const updateUserRole = (req, res, next) => {
     });
 };
 
+// Get all staff users (admin only)
+const getStaffUsers = (req, res, next) => {
+  User.find({ role: "staff" })
+    .select("name email initials")
+    .then((users) => res.send(users))
+    .catch(next);
+};
+
 module.exports = {
   createUser,
   login,
   getCurrentUser,
   updateUser,
   updateUserRole,
+  getStaffUsers,
 };

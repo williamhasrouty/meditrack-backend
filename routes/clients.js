@@ -8,6 +8,7 @@ const {
   addMedication,
   updateMedication,
   deleteMedication,
+  assignClient,
 } = require("../controllers/clients");
 const {
   validateClientId,
@@ -16,6 +17,7 @@ const {
   validateAddMedication,
   validateUpdateMedication,
   validateDeleteMedication,
+  validateAssignClient,
 } = require("../middlewares/validation");
 const { requireAdmin } = require("../middlewares/authorization");
 
@@ -62,6 +64,14 @@ router.delete(
   requireAdmin,
   validateDeleteMedication,
   deleteMedication,
+);
+
+// PATCH /clients/:clientId/assign - assign client to staff (admin only)
+router.patch(
+  "/:clientId/assign",
+  requireAdmin,
+  validateAssignClient,
+  assignClient,
 );
 
 module.exports = router;

@@ -38,6 +38,9 @@ const validateClientId = celebrate({
 const validateCreateClient = celebrate({
   body: Joi.object().keys({
     name: Joi.string().required().min(2).max(50),
+    region: Joi.string()
+      .required()
+      .valid("GGRC", "RCEB", "ACRC", "RCOC", "SDRC"),
   }),
 });
 
@@ -45,6 +48,9 @@ const validateCreateClient = celebrate({
 const validateUpdateClient = celebrate({
   body: Joi.object().keys({
     name: Joi.string().required().min(2).max(50),
+    region: Joi.string()
+      .required()
+      .valid("GGRC", "RCEB", "ACRC", "RCOC", "SDRC"),
   }),
 });
 
@@ -124,6 +130,16 @@ const validateUpdateUserRole = celebrate({
   }),
 });
 
+// Validation for assigning client to staff
+const validateAssignClient = celebrate({
+  params: Joi.object().keys({
+    clientId: Joi.string().hex().length(24).required(),
+  }),
+  body: Joi.object().keys({
+    staffId: Joi.string().hex().length(24).allow(null, ""),
+  }),
+});
+
 module.exports = {
   validateSignup,
   validateSignin,
@@ -138,4 +154,5 @@ module.exports = {
   validateGetAdministrations,
   validateSaveAdministrations,
   validateDeleteAdministrations,
+  validateAssignClient,
 };

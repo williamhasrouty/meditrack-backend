@@ -3,6 +3,7 @@ const {
   getCurrentUser,
   updateUser,
   updateUserRole,
+  getStaffUsers,
 } = require("../controllers/users");
 const {
   validateUpdateUser,
@@ -16,12 +17,15 @@ router.get("/me", getCurrentUser);
 // PATCH /users/me - update current user profile
 router.patch("/me", validateUpdateUser, updateUser);
 
+// GET /users/staff - get all staff users (admin only)
+router.get("/staff", requireAdmin, getStaffUsers);
+
 // PATCH /users/:userId/role - update user role (admin only)
 router.patch(
   "/:userId/role",
   requireAdmin,
   validateUpdateUserRole,
-  updateUserRole
+  updateUserRole,
 );
 
 module.exports = router;
