@@ -31,6 +31,18 @@ const clientSchema = new mongoose.Schema({
     required: true,
     enum: ["GGRC", "RCEB", "ACRC", "RCOC", "SDRC"],
   },
+  imageUrl: {
+    type: String,
+    default: "",
+    validate: {
+      validator: function (v) {
+        if (!v) return true; // Allow empty strings
+        // Basic URL validation
+        return /^https?:\/\/.+/.test(v);
+      },
+      message: "Please provide a valid URL",
+    },
+  },
   medications: [medicationSchema],
   owner: {
     type: mongoose.Schema.Types.ObjectId,
