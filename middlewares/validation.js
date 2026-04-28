@@ -41,16 +41,32 @@ const validateCreateClient = celebrate({
     region: Joi.string()
       .required()
       .valid("GGRC", "RCEB", "ACRC", "RCOC", "SDRC"),
+    imageUrl: Joi.string().uri().allow(""),
+    dateOfBirth: Joi.date().allow(null, ""),
+    allergies: Joi.string().allow(""),
+    diagnoses: Joi.string().allow(""),
+    emergencyContacts: Joi.string().allow(""),
+    prescribingPhysician: Joi.string().allow(""),
+    pharmacyInfo: Joi.string().allow(""),
+    notes: Joi.string().allow(""),
+    isActive: Joi.boolean(),
   }),
 });
 
 // Validation for updating a client
 const validateUpdateClient = celebrate({
   body: Joi.object().keys({
-    name: Joi.string().required().min(2).max(50),
-    region: Joi.string()
-      .required()
-      .valid("GGRC", "RCEB", "ACRC", "RCOC", "SDRC"),
+    name: Joi.string().min(2).max(50),
+    region: Joi.string().valid("GGRC", "RCEB", "ACRC", "RCOC", "SDRC"),
+    imageUrl: Joi.string().uri().allow(""),
+    dateOfBirth: Joi.date().allow(null, ""),
+    allergies: Joi.string().allow(""),
+    diagnoses: Joi.string().allow(""),
+    emergencyContacts: Joi.string().allow(""),
+    prescribingPhysician: Joi.string().allow(""),
+    pharmacyInfo: Joi.string().allow(""),
+    notes: Joi.string().allow(""),
+    isActive: Joi.boolean(),
   }),
 });
 

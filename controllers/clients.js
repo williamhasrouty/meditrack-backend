@@ -46,11 +46,32 @@ const getClientById = (req, res, next) => {
 
 // Create a new client
 const createClient = (req, res, next) => {
-  const { name, region } = req.body;
+  const {
+    name,
+    region,
+    imageUrl,
+    dateOfBirth,
+    allergies,
+    diagnoses,
+    emergencyContacts,
+    prescribingPhysician,
+    pharmacyInfo,
+    notes,
+    isActive,
+  } = req.body;
 
   Client.create({
     name,
     region,
+    imageUrl,
+    dateOfBirth,
+    allergies,
+    diagnoses,
+    emergencyContacts,
+    prescribingPhysician,
+    pharmacyInfo,
+    notes,
+    isActive,
     owner: req.user._id,
     medications: [],
   })
@@ -66,13 +87,38 @@ const createClient = (req, res, next) => {
 
 // Update a client
 const updateClient = (req, res, next) => {
-  const { name, region } = req.body;
+  const {
+    name,
+    region,
+    imageUrl,
+    dateOfBirth,
+    allergies,
+    diagnoses,
+    emergencyContacts,
+    prescribingPhysician,
+    pharmacyInfo,
+    notes,
+    isActive,
+  } = req.body;
 
   Client.findOneAndUpdate(
     { _id: req.params.clientId, owner: req.user._id },
-    { name, region },
+    {
+      name,
+      region,
+      imageUrl,
+      dateOfBirth,
+      allergies,
+      diagnoses,
+      emergencyContacts,
+      prescribingPhysician,
+      pharmacyInfo,
+      notes,
+      isActive,
+    },
     { new: true, runValidators: true },
   )
+    .populate("assignedTo", "name email initials")
     .then((client) => {
       if (!client) {
         throw new NotFoundError("Client not found");

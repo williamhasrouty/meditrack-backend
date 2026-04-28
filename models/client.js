@@ -43,6 +43,38 @@ const clientSchema = new mongoose.Schema({
       message: "Please provide a valid URL",
     },
   },
+  dateOfBirth: {
+    type: Date,
+    default: null,
+  },
+  allergies: {
+    type: String,
+    default: "",
+  },
+  diagnoses: {
+    type: String,
+    default: "",
+  },
+  emergencyContacts: {
+    type: String,
+    default: "",
+  },
+  prescribingPhysician: {
+    type: String,
+    default: "",
+  },
+  pharmacyInfo: {
+    type: String,
+    default: "",
+  },
+  notes: {
+    type: String,
+    default: "",
+  },
+  isActive: {
+    type: Boolean,
+    default: true,
+  },
   medications: [medicationSchema],
   owner: {
     type: mongoose.Schema.Types.ObjectId,
