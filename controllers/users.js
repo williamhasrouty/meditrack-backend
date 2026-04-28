@@ -173,9 +173,9 @@ const updateUserRole = (req, res, next) => {
     });
 };
 
-// Get all staff users (admin only)
+// Get all users (staff and admin) for name mapping
 const getStaffUsers = (req, res, next) => {
-  User.find({ role: "staff" })
+  User.find({ role: { $in: ["staff", "admin"] } })
     .select("name email initials")
     .then((users) => res.send(users))
     .catch(next);

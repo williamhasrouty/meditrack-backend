@@ -17,8 +17,8 @@ router.get("/me", getCurrentUser);
 // PATCH /users/me - update current user profile
 router.patch("/me", validateUpdateUser, updateUser);
 
-// GET /users/staff - get all staff users (admin only)
-router.get("/staff", requireAdmin, getStaffUsers);
+// GET /users/staff - get all users for name mapping (authenticated)
+router.get("/staff", getStaffUsers);
 
 // PATCH /users/:userId/role - update user role (admin only)
 router.patch(
