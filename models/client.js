@@ -81,6 +81,12 @@ const clientSchema = new mongoose.Schema({
     ref: "user",
     required: true,
   },
+  assignedStaff: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "user",
+    },
+  ],
   assignedTo: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "user",

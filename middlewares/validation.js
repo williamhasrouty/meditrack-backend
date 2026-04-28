@@ -153,6 +153,7 @@ const validateAssignClient = celebrate({
   }),
   body: Joi.object().keys({
     staffId: Joi.string().hex().length(24).allow(null, ""),
+    staffIds: Joi.array().items(Joi.string().hex().length(24)),
   }),
 });
 

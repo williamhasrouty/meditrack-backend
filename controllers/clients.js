@@ -7,28 +7,35 @@ const {
 
 // Get all clients for the logged-in user
 const getClients = (req, res, next) => {
-  // Admins see all clients they own, staff see clients assigned to them
+  // Admins see all clients they own, staff see clients assigned to them (either way)
   const query =
     req.user.role === "admin"
       ? { owner: req.user._id }
-      : { assignedTo: req.user._id };
+      : {
+          $or: [{ assignedTo: req.user._id }, { assignedStaff: req.user._id }],
+        };
 
   Client.find(query)
     .populate("assignedTo", "name email initials")
+    .populate("assignedStaff", "name email initials")
     .then((clients) => res.send(clients))
     .catch(next);
 };
 
 // Get a single client by ID
 const getClientById = (req, res, next) => {
-  // Admins can access their own clients, staff can access clients assigned to them
+  // Admins can access their own clients, staff can access clients assigned to them (either way)
   const query =
     req.user.role === "admin"
       ? { _id: req.params.clientId, owner: req.user._id }
-      : { _id: req.params.clientId, assignedTo: req.user._id };
+      : {
+          _id: req.params.clientId,
+          $or: [{ assignedTo: req.user._id }, { assignedStaff: req.user._id }],
+        };
 
   Client.findOne(query)
     .populate("assignedTo", "name email initials")
+    .populate("assignedStaff", "name email initials")
     .then((client) => {
       if (!client) {
         throw new NotFoundError("Client not found");
@@ -233,19 +240,35 @@ const deleteMedication = (req, res, next) => {
 
 // Assign a client to a staff member (admin only)
 const assignClient = (req, res, next) => {
-  const { staffId } = req.body;
+  const { staffId, staffIds } = req.body;
 
   // Only admins can assign clients
   if (req.user.role !== "admin") {
     return next(new ForbiddenError("Only admins can assign clients"));
   }
 
+  // Support both single (staffId) and multiple (staffIds) assignment
+  const updateData = {};
+
+  if (staffIds !== undefined) {
+    // Multiple staff assignment
+    updateData.assignedStaff = Array.isArray(staffIds) ? staffIds : [];
+  } else if (staffId !== undefined) {
+    // Single staff assignment (backward compatibility)
+    updateData.assignedTo = staffId || null;
+    // Also add to assignedStaff array if provided
+    if (staffId) {
+      updateData.assignedStaff = [staffId];
+    }
+  }
+
   Client.findOneAndUpdate(
     { _id: req.params.clientId, owner: req.user._id },
-    { assignedTo: staffId || null },
+    updateData,
     { new: true, runValidators: true },
   )
     .populate("assignedTo", "name email initials")
+    .populate("assignedStaff", "name email initials")
     .then((client) => {
       if (!client) {
         throw new NotFoundError("Client not found");

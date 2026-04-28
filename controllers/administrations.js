@@ -7,11 +7,14 @@ const getAdministrations = (req, res, next) => {
   const { clientId } = req.params;
   const { month, year } = req.query;
 
-  // Verify the client is accessible to the user (owner for admin, assignedTo for staff)
+  // Verify the client is accessible to the user (owner for admin, assignedTo or assignedStaff for staff)
   const query =
     req.user.role === "admin"
       ? { _id: clientId, owner: req.user._id }
-      : { _id: clientId, assignedTo: req.user._id };
+      : {
+          _id: clientId,
+          $or: [{ assignedTo: req.user._id }, { assignedStaff: req.user._id }],
+        };
 
   Client.findOne(query)
     .then((client) => {
@@ -76,11 +79,14 @@ const saveAdministrations = (req, res, next) => {
   });
   console.log("SaveAdmin - Records received:", records);
 
-  // Verify the client is accessible to the user (owner for admin, assignedTo for staff)
+  // Verify the client is accessible to the user (owner for admin, assignedTo or assignedStaff for staff)
   const query =
     req.user.role === "admin"
       ? { _id: clientId, owner: req.user._id }
-      : { _id: clientId, assignedTo: req.user._id };
+      : {
+          _id: clientId,
+          $or: [{ assignedTo: req.user._id }, { assignedStaff: req.user._id }],
+        };
 
   Client.findOne(query)
     .then((client) => {
@@ -138,11 +144,14 @@ const deleteAdministrations = (req, res, next) => {
   const { clientId } = req.params;
   const { month, year } = req.query;
 
-  // Verify the client is accessible to the user (owner for admin, assignedTo for staff)
+  // Verify the client is accessible to the user (owner for admin, assignedTo or assignedStaff for staff)
   const query =
     req.user.role === "admin"
       ? { _id: clientId, owner: req.user._id }
-      : { _id: clientId, assignedTo: req.user._id };
+      : {
+          _id: clientId,
+          $or: [{ assignedTo: req.user._id }, { assignedStaff: req.user._id }],
+        };
 
   Client.findOne(query)
     .then((client) => {
