@@ -77,7 +77,9 @@ const validateAddMedication = celebrate({
   }),
   body: Joi.object().keys({
     name: Joi.string().required(),
-    times: Joi.array().items(Joi.string()).min(1).required(),
+    isPRN: Joi.boolean().optional(),
+    times: Joi.array().items(Joi.string()).optional(),
+    directions: Joi.string().allow("").max(500).optional(),
   }),
 });
 
@@ -89,7 +91,9 @@ const validateUpdateMedication = celebrate({
   }),
   body: Joi.object().keys({
     name: Joi.string().required(),
-    times: Joi.array().items(Joi.string()).min(1).required(),
+    isPRN: Joi.boolean().optional(),
+    times: Joi.array().items(Joi.string()).optional(),
+    directions: Joi.string().allow("").max(500).optional(),
   }),
 });
 
@@ -157,6 +161,25 @@ const validateAssignClient = celebrate({
   }),
 });
 
+// Validation for creating PRN administration
+const validateCreatePRNAdministration = celebrate({
+  body: Joi.object().keys({
+    clientId: Joi.string().hex().length(24).required(),
+    medicationId: Joi.string().hex().length(24).required(),
+    medicationName: Joi.string(),
+    administeredAt: Joi.date(),
+    reason: Joi.string().allow(""),
+    notes: Joi.string().allow(""),
+  }),
+});
+
+// Validation for PRN administration ID parameter
+const validatePRNAdministrationId = celebrate({
+  params: Joi.object().keys({
+    id: Joi.string().hex().length(24).required(),
+  }),
+});
+
 module.exports = {
   validateSignup,
   validateSignin,
@@ -172,4 +195,6 @@ module.exports = {
   validateSaveAdministrations,
   validateDeleteAdministrations,
   validateAssignClient,
+  validateCreatePRNAdministration,
+  validatePRNAdministrationId,
 };

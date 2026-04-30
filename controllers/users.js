@@ -71,9 +71,18 @@ const login = (req, res, next) => {
           throw new UnauthorizedError("Incorrect email or password");
         }
 
-        const token = jwt.sign({ _id: user._id, role: user.role }, JWT_SECRET, {
-          expiresIn: "7d",
-        });
+        const token = jwt.sign(
+          {
+            _id: user._id,
+            role: user.role,
+            name: user.name,
+            initials: user.initials,
+          },
+          JWT_SECRET,
+          {
+            expiresIn: "7d",
+          },
+        );
 
         return res.send({
           token,

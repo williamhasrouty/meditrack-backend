@@ -5,13 +5,27 @@ const medicationSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  isPRN: {
+    type: Boolean,
+    default: false,
+  },
   times: {
     type: [String],
-    required: true,
-    validate: {
-      validator: (v) => v.length > 0,
-      message: "At least one administration time is required",
+    required: function () {
+      return !this.isPRN;
     },
+    validate: {
+      validator: function (v) {
+        if (this.isPRN) return true; // PRN medications don't need times
+        return v && v.length > 0;
+      },
+      message:
+        "At least one administration time is required for scheduled medications",
+    },
+  },
+  directions: {
+    type: String,
+    default: "",
   },
   createdAt: {
     type: Date,

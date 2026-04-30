@@ -163,7 +163,8 @@ const deleteClient = (req, res, next) => {
 
 // Add a medication to a client
 const addMedication = (req, res, next) => {
-  const { name, times } = req.body;
+  const { name, times, isPRN, directions } = req.body;
+  console.log("addMedication received:", { name, times, isPRN, directions });
 
   Client.findOne({ _id: req.params.clientId, owner: req.user._id })
     .then((client) => {
@@ -171,11 +172,17 @@ const addMedication = (req, res, next) => {
         throw new NotFoundError("Client not found");
       }
 
-      client.medications.push({ name, times });
+      client.medications.push({
+        name,
+        times: times || [],
+        isPRN: isPRN || false,
+        directions: directions || "",
+      });
       return client.save();
     })
     .then((client) => res.status(201).send(client))
     .catch((err) => {
+      console.log("addMedication error:", err.name, err.message);
       if (err.name === "ValidationError") {
         next(new BadRequestError("Invalid data provided"));
       } else if (err.name === "CastError") {
@@ -188,7 +195,7 @@ const addMedication = (req, res, next) => {
 
 // Update a medication
 const updateMedication = (req, res, next) => {
-  const { name, times } = req.body;
+  const { name, times, isPRN, directions } = req.body;
 
   Client.findOne({ _id: req.params.clientId, owner: req.user._id })
     .then((client) => {
@@ -202,7 +209,13 @@ const updateMedication = (req, res, next) => {
       }
 
       medication.name = name;
-      medication.times = times;
+      medication.times = times || [];
+      if (isPRN !== undefined) {
+        medication.isPRN = isPRN;
+      }
+      if (directions !== undefined) {
+        medication.directions = directions;
+      }
       return client.save();
     })
     .then((client) => res.send(client))
