@@ -6,6 +6,7 @@ const clientsRouter = require("./clients");
 const administrationsRouter = require("./administrations");
 const prnAdministrationsRouter = require("./prnAdministrations");
 const usersRouter = require("./users");
+const auditLogsRouter = require("./auditLogs");
 
 // Public routes
 router.post("/signup", validateSignup, createUser);
@@ -16,5 +17,6 @@ router.use("/clients", auth, clientsRouter);
 router.use("/administrations", auth, administrationsRouter);
 router.use("/prn-administrations", auth, prnAdministrationsRouter);
 router.use("/users", auth, usersRouter);
+router.use("/audit-logs", auth, auditLogsRouter);
 
 module.exports = router;

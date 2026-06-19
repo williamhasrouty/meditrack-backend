@@ -40,6 +40,51 @@ const userSchema = new mongoose.Schema({
     enum: ["staff", "admin"],
     default: "staff",
   },
+  // Password policy fields
+  passwordHistory: {
+    type: [String],
+    select: false,
+    default: [],
+  },
+  passwordChangedAt: {
+    type: Date,
+    default: Date.now,
+  },
+  // Account lockout fields
+  failedLoginAttempts: {
+    type: Number,
+    default: 0,
+  },
+  accountLockedUntil: {
+    type: Date,
+    default: null,
+  },
+  lastLoginAt: {
+    type: Date,
+    default: null,
+  },
+  // 2FA fields
+  twoFactorEnabled: {
+    type: Boolean,
+    default: false,
+  },
+  twoFactorSecret: {
+    type: String,
+    select: false,
+  },
+  twoFactorBackupCodes: {
+    type: [String],
+    select: false,
+  },
+  // Password reset fields
+  passwordResetToken: {
+    type: String,
+    select: false,
+  },
+  passwordResetExpires: {
+    type: Date,
+    select: false,
+  },
 });
 
 module.exports = mongoose.model("user", userSchema);
